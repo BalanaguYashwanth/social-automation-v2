@@ -1,6 +1,6 @@
 ## Overview
 
-Agent adds trending and viral tweets autonomously
+Companion Agent adds trending and viral content to their socials autonomously and helps creators to grow visibility
 
 ## Deployment
 
