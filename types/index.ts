@@ -33,3 +33,13 @@ export interface LoadingSpinnerProps {
 export interface ErrorDisplayProps {
     error: string;
 }
+
+export interface InlineErrorDisplayProps {
+  error: string;
+  onDismiss?: () => void;
+}
+
+export type ErrorState = {
+  message: string;
+  source: 'hero' | 'cta' | 'try-out' | null;
+} | null;
