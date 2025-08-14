@@ -1,17 +1,19 @@
 "use client"
 import { useState } from "react"
+import { CheckCircle, Shield, Zap, Users, TrendingUp, LogOut, Lock, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, Shield, Zap, Users, TrendingUp, LogOut, Lock, Star } from "lucide-react"
+import InlineErrorDisplay from "@/components/ui/InlineErrorDisplay"
 import { API, GOOGLE_FORM } from "@/constants"
 import { api } from "@/lib/api"
+import { ErrorState } from "@/types"
 
 export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorState>(null);
 
-  const handleLogin = async () => {
+  const handleLogin = async (source: 'hero' | 'cta' | 'try-out') => {
     setIsLoading(true);
     setError(null);
     try {
@@ -20,7 +22,7 @@ export default function LandingPage() {
       window.location.href = authUrl;
     } catch (err) {
       console.error(err);
-      setError("Failed to connect with Twitter. Please try again.");
+      setError({message: "Failed to connect with Twitter. Please try again.", source});
       setIsLoading(false);
     }
   };
@@ -44,7 +46,7 @@ export default function LandingPage() {
               <a href="#security" className="text-gray-600 hover:text-indigo-600 transition-colors">
                 Security
               </a>
-              <Button variant="outline" size="sm" onClick={handleLogin}>
+              <Button variant="outline" size="sm" onClick={() => handleLogin('try-out')}>
                 Try out
               </Button>
             </nav>
@@ -68,9 +70,14 @@ export default function LandingPage() {
               24/7 and creates engaging posts on your behalf, while you maintain complete control and security.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 text-lg" onClick={handleLogin}>
-                Try Now - It's Free
-              </Button>
+              <div className="flex flex-col items-center gap-4 mb-12">
+                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 text-lg" onClick={() => handleLogin('hero')} disabled={isLoading}>
+                  Try Now - It's Free
+                </Button>
+              {error?.source === 'hero' && (
+                  <InlineErrorDisplay error={error.message} onDismiss={() => setError(null)} />
+              )}
+              </div>
             </div>
             <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
               <div className="flex items-center">
@@ -336,9 +343,14 @@ export default function LandingPage() {
             credit card required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 text-lg" onClick={handleLogin}>
-              Start Free Trial
-            </Button>
+            <div className="flex flex-col items-center gap-4 mb-12">
+              <Button size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 text-lg" onClick={() => handleLogin('cta')} disabled={isLoading}>
+                Start Free Trial
+              </Button>
+              {error?.source === 'cta' && ( 
+                <InlineErrorDisplay error={error.message} onDismiss={() => setError(null)} />
+              )}
+            </div>
           </div>
           <p className="text-sm text-indigo-200 mt-6">Free 14-day trial • No lock-in period • Cancel anytime</p>
         </div>
