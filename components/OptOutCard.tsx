@@ -7,7 +7,7 @@ export default function OptOutCard({ onOptOutClick }: OptOutCardProps) {
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div className="flex flex-col gap-2">
-                    <h3 className="font-semibold text-red-800">Opt Out</h3>
+                    <h3 className="font-semibold text-red-800">Opt Out Anytime!</h3>
                     <p className="text-sm text-red-600">This will permanently remove your account from the service.</p>
                 </div>
                 <button
